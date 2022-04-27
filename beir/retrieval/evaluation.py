@@ -43,7 +43,8 @@ class EvaluateRetrieval:
     @staticmethod
     def evaluate(qrels: Dict[str, Dict[str, int]], 
                  results: Dict[str, Dict[str, float]], 
-                 k_values: List[int]) -> Tuple[Dict[str, float], Dict[str, float], Dict[str, float], Dict[str, float]]:
+                 k_values: List[int],
+                 return_scores: bool = False) -> Tuple[Dict[str, float], Dict[str, float], Dict[str, float], Dict[str, float]]:
     
         ndcg = {}
         _map = {}
@@ -81,7 +82,10 @@ class EvaluateRetrieval:
             for k in eval.keys():
                 logging.info("{}: {:.4f}".format(k, eval[k]))
 
-        return ndcg, _map, recall, precision
+        if return_scores:
+            return ndcg, _map, recall, precision, scores
+        else:
+            return ndcg, _map, recall, precision
     
     @staticmethod
     def evaluate_custom(qrels: Dict[str, Dict[str, int]], 
